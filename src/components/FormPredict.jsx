@@ -25,27 +25,51 @@ export default function FormPredict({ onResult }) {
   async function handlePredict() {
     setError("");
 
-    // VALIDASI FORM
-    if(luas > 200){
-      setError("Luas Lahan tidak boleh lebih dari 200!");
-    }
-    if (!luas || !provinsi || !musim || !tanggalTanam) {
-      setError("Semua field wajib diisi, termasuk tanggal tanam.");
-      return;
-    }
-    if (!daftarProvinsi.includes(provinsi)) {
-      setError("Provinsi tidak tersedia dalam dataset.");
-      return;
-    }
-    if (!daftarMusim.includes(musim)) {
-      setError("Musim tidak tersedia dalam dataset.");
-      return;
-    }
+  // VALIDASI FORM
+  if (!luas || !provinsi || !musim || !tanggalTanam) {
+    setError("Semua field wajib diisi, termasuk tanggal tanam.");
+    return;
+  }
+
+  // VALIDASI LUAS
+  const luasNum = parseFloat(luas);
+
+  if (isNaN(luasNum)) {
+    setError("Luas lahan harus berupa angka.");
+    return;
+  }
+
+  if (luasNum <= 0) {
+    setError("Luas lahan harus lebih dari 0!");
+    return;
+  }
+
+  if (luasNum > 200) {
+    setError("Luas lahan tidak boleh lebih dari 200!");
+    return;
+  }
+
+  // VALIDASI TAHUN TANGGAL
+  const tahun = parseInt(tanggalTanam.split("-")[0]);
+  if (isNaN(tahun) || tahun < 1900 || tahun > 2100) {
+    setError("Format tanggal tidak valid. Tahun harus antara 1900–2100.");
+    return;
+  }
+
+  if (!daftarProvinsi.includes(provinsi)) {
+    setError("Provinsi tidak tersedia dalam dataset.");
+    return;
+  }
+
+  if (!daftarMusim.includes(musim)) {
+    setError("Musim tidak tersedia dalam dataset.");
+    return;
+  }
 
     setLoading(true);
 
     const payload = {
-      luas_lahan: parseFloat(luas),
+      luas_lahan: luasNum,
       provinsi,
       musim,
       tanggal_tanam: tanggalTanam
