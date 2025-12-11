@@ -13,3 +13,37 @@ html, body {
   margin: 0 auto;
   padding: 0;
 }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.shake {
+  animation: shake 0.3s ease-in-out;
+}
+
+input[type="date"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+}
+
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+  padding-left: 4px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 12px;
+}
+
+input[type="date"]:invalid::-webkit-datetime-edit {
+  color: #6b7280;
+}
