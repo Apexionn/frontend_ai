@@ -26,6 +26,9 @@ export default function FormPredict({ onResult }) {
     setError("");
 
     // VALIDASI FORM
+    if(luas > 200){
+      setError("Luas Lahan tidak boleh lebih dari 200!");
+    }
     if (!luas || !provinsi || !musim || !tanggalTanam) {
       setError("Semua field wajib diisi, termasuk tanggal tanam.");
       return;
@@ -63,7 +66,6 @@ export default function FormPredict({ onResult }) {
         return;
       }
 
-      // KIRIM HASIL KE PARENT COMPONENT
       onResult(data);
 
     } catch (err) {
@@ -74,9 +76,7 @@ export default function FormPredict({ onResult }) {
     setLoading(false);
   }
 
-  // ==============================
-  //      HANDLE RESET
-  // ==============================
+  // HANDLE RESET
   function handleClear() {
     setLuas("");
     setProvinsi("Jawa Timur");
@@ -123,16 +123,15 @@ export default function FormPredict({ onResult }) {
           </select>
         </div>
 
-        <div>
-          <label className="text-sm font-medium">Tanggal Tanam</label>
-          <input
-            type="date"
-            value={tanggalTanam}
-            onChange={e => setTanggalTanam(e.target.value)}
-            className="mt-1 w-full border rounded px-3 py-2"
-          />
-        </div>
-
+      <div className="md:col-span-3">
+        <label className="text-sm font-medium">Tanggal Tanam</label>
+        <input
+          type="date"
+          value={tanggalTanam}
+          onChange={e => setTanggalTanam(e.target.value)}
+          className="mt-1 w-full border rounded px-3 py-2"
+        />
+      </div>
       </div>
 
       {error && (
