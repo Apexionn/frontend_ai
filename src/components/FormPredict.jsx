@@ -21,6 +21,7 @@ export default function FormPredict({ onResult }) {
   const [tanggalTanam, setTanggalTanam] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [shakeField, setShakeField] = useState("");
 
   async function handlePredict() {
     setError("");
@@ -31,24 +32,26 @@ export default function FormPredict({ onResult }) {
     return;
   }
 
-  // VALIDASI LUAS
   const luasNum = parseFloat(luas);
 
   if (isNaN(luasNum)) {
     setError("Luas lahan harus berupa angka.");
+    setShakeField("luas");
     return;
   }
 
   if (luasNum <= 0) {
     setError("Luas lahan harus lebih dari 0!");
+    setShakeField("luas");
     return;
   }
 
   if (luasNum > 200) {
     setError("Luas lahan tidak boleh lebih dari 200!");
+    setShakeField("luas");
     return;
   }
-
+  
   // VALIDASI TAHUN TANGGAL
   const tahun = parseInt(tanggalTanam.split("-")[0]);
   if (isNaN(tahun) || tahun < 1900 || tahun > 2100) {
@@ -117,10 +120,15 @@ export default function FormPredict({ onResult }) {
         <div>
           <label className="text-sm font-medium">Luas Lahan (ha)</label>
           <input
+            min={0}
+            max={200}
             type="number"
             value={luas}
-            onChange={e => setLuas(e.target.value)}
-            className="mt-1 w-full border rounded px-3 py-2"
+            onChange={e => {
+              setLuas(e.target.value);
+              setShakeField("");
+            }}
+            className={`mt-1 w-full border rounded px-3 py-2 ${shakeField === "luas" ? "shake border-red-500" : ""}`}
             placeholder="2.5"
           />
         </div>
